@@ -339,7 +339,7 @@ globalkeys = awful.util.table.join(
               {description = "screenlock", group = "launcher"}),
     awful.key({ "Control", "Mod1"   }, "p", function () awful.spawn("flatpak run com.deepin.Screenshot")      end,
               {description = "screenshot", group = "launcher"}),
-    awful.key({ "Control", "Mod1"   }, "s", function () awful.spawn("/home/huangyu/workspace/bin/screen-setup.sh")   end,
+    awful.key({ "Control", "Mod1"   }, "s", function () awful.spawn("/bin/sh /home/huangyu/workspace/bin/screen-setup.sh")   end,
               {description = "setup screen", group = "launcher"})
 --- awful.key({ "Mod1"   }, "space", function () awful.spawn("dmenu_run")      end,
 ---           {description = "applauncher", group = "launcher"})

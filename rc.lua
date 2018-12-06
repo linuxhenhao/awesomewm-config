@@ -337,12 +337,12 @@ globalkeys = awful.util.table.join(
 -- i3lock screenlock
     awful.key({ "Control", "Mod1"   }, "l", function () awful.spawn("i3lock -i /home/huangyu/.config/awesome/desktop.png")      end,
               {description = "screenlock", group = "launcher"}),
-    awful.key({ "Control", "Mod1"   }, "p", function () awful.spawn("flatpak run com.deepin.Screenshot")      end,
+    awful.key({ "Control", "Mod1"   }, "p", function () awful.spawn("flatpak run org.deepin.flatdeb.deepin-screenshot")      end,
               {description = "screenshot", group = "launcher"}),
     awful.key({ "Control", "Mod1"   }, "s", function () awful.spawn("/bin/sh /home/huangyu/workspace/bin/screen-setup.sh")   end,
-              {description = "setup screen", group = "launcher"})
---- awful.key({ "Mod1"   }, "space", function () awful.spawn("dmenu_run")      end,
----           {description = "applauncher", group = "launcher"})
+              {description = "setup screen", group = "launcher"}),
+    awful.key({ "Mod1"   }, "space", function () awful.spawn("dmenu_run")      end,
+              {description = "applauncher", group = "launcher"})
 )
 
 clientkeys = awful.util.table.join(

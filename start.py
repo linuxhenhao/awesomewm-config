@@ -1,32 +1,37 @@
 #!/usr/bin/env python3
 import subprocess
-import threading
+from multiprocessing import Process
+from functools import partial
 import logging
 import time
 
 logging.basicConfig(level=logging.DEBUG)
 # program in format ('binary_name', 'args', 'pgrep -f's match str')
 # if match str is '', using the 'binary_name' instead
-PROGRAMS = [('xcompmgr', '', ''),
-            ('volumeicon', '', ''),
+PROGRAMS = [('xcompmgr', None, ''),
+            ('volumeicon', None, ''),
             # ('/usr/bin/ss-local', '-c /etc/shadowsocks.json', ''),
-            ('lxpolkit', '', ''),
-            ('kupfer', '--no-splash', ''),
-            # ('fcitx', '', ''),
+            ('lxpolkit', None, ''),
+            # ('kupfer', '--no-splash', ''),
+            ('fcitx', None, ''),
+            ('copyq', None, ''),
             ('wicd-client', '-t', 'wicd-client.py'),
             ]
 
+def run_in_process(argsList):
+    def run_command(argsList):
+        try:
+            output = subprocess.check_output(argsList)
+        except Exception as e:
+            print(e)
+            return
+        print(output)
 
-class ProcessRunner(threading.Thread):
-    def __init__(self, nameAndArgsTuple):
-        super(ProcessRunner, self).__init__()
-        self._programAndArgs = nameAndArgsTuple
-        print(self._programAndArgs)
-
-    def run(self):
-        if(self._programAndArgs[0] == "fcitx"):
-            time.sleep(5)  # sleep 5s before running fcitx
-        subprocess.check_output(self._programAndArgs)
+    print('preparing to run in process {}'.format(argsList))
+    p = Process(target=partial(run_command, argsList))
+    p.daemon = True
+    p.start()
+    print('running in process {}'.format(argsList))
 
 
 def start():
@@ -46,12 +51,14 @@ def start():
                 remain = True
                 # if any of the programs need to be run, set remain to True
                 logging.debug('{} is not running'.format(name))
-                argList = args.split(' ')
-                argList.insert(0, name)
+                if args is not None:
+                    argList = args.split(' ')
+                    argList.insert(0, name)
+                else:
+                    # no args
+                    argList = [name]
                 print(argList)
-                p = ProcessRunner(argList)
-                p.daemon = True
-                p.start()
+                run_in_process(argList)
         time.sleep(1)
     logging.debug('startup finished')
 

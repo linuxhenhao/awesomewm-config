@@ -13,6 +13,9 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
 
 -- Load Debian menu entries
 -- require("debian.menu")
+-- Load battery
+local battery = require("obvious.battery")
+-- local wlan = require("obvious.wlan")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -44,7 +47,7 @@ end
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "alacritty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -218,6 +221,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             wibox.widget.systray(),
+	    battery(),
             mytextclock,
             s.mylayoutbox,
         },
